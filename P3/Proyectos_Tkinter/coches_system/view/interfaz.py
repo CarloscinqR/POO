@@ -1,61 +1,63 @@
 from tkinter import *
 from tkinter import messagebox
+from controller import controlador
 class InterfacesMenu():
     def __init__(self,ventana):
         ventana.geometry("800x600")
         ventana.title("Coches system")
-        self.menu_principal(ventana)
-
-    def borrarPantalla(self,ventana):
+        InterfacesMenu.menu_principal(ventana)
+    @staticmethod
+    def borrarPantalla(ventana):
         for widget in ventana.winfo_children():
             widget.destroy()
-
-    def menu_principal(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def menu_principal(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text="Menu principal")
         lblTitulo.pack(pady=5)
-        btnCoches=Button(ventana,text="1.-Coches",command=lambda : self.menu_acciones(ventana,"coches"))
+        btnCoches=Button(ventana,text="1.-Coches",command=lambda : InterfacesMenu.menu_acciones(ventana,"coches"))
         btnCoches.pack(pady=5)
-        btnCamiones=Button(ventana,text="2.-Camiones",command=lambda: self.menu_acciones(ventana,"camiones"))
+        btnCamiones=Button(ventana,text="2.-Camiones",command=lambda: InterfacesMenu.menu_acciones(ventana,"camiones"))
         btnCamiones.pack(pady=5)
-        btnCamionetas=Button(ventana,text="3.-Camionetas",command=lambda: self.menu_acciones(ventana,"camionetas"))
+        btnCamionetas=Button(ventana,text="3.-Camionetas",command=lambda: InterfacesMenu.menu_acciones(ventana,"camionetas"))
         btnCamionetas.pack(pady=5)
         btnSalir=Button(ventana,text="4.-Salir",command=ventana.quit)
         btnSalir.pack(pady=5)
-
-    def menu_acciones(self,ventana,vehiculo):
+    @staticmethod
+    def menu_acciones(ventana,vehiculo):
         global tipo
         tipo=vehiculo
-        self.borrarPantalla(ventana)
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Menu de {tipo}")
         lblTitulo.pack(pady=5)
         if tipo=="coches":
-            btnAgregar=Button(ventana,text="1.-Agregar",command=lambda: self.coches_agregar(ventana))
+            btnAgregar=Button(ventana,text="1.-Agregar",command=lambda: InterfacesMenu.coches_agregar(ventana))
             btnAgregar.pack(pady=5)
-            btnMostrar=Button(ventana,text="2.-Mostrar",command=lambda: self.coches_mostrar(ventana))
+            btnMostrar=Button(ventana,text="2.-Mostrar",command=lambda: InterfacesMenu.coches_mostrar(ventana))
             btnMostrar.pack(pady=5)
         elif tipo=="camionetas":
-            btnAgregar=Button(ventana,text="1.-Agregar",command=lambda: self.camionetas_agregar(ventana))
+            btnAgregar=Button(ventana,text="1.-Agregar",command=lambda: InterfacesMenu.camionetas_agregar(ventana))
             btnAgregar.pack(pady=5)
-            btnMostrar=Button(ventana,text="2.-Mostrar",command=lambda: self.camionetas_mostrar(ventana))
+            btnMostrar=Button(ventana,text="2.-Mostrar",command=lambda: InterfacesMenu.camionetas_mostrar(ventana))
             btnMostrar.pack(pady=5)
         elif tipo=="camiones":
-            btnAgregar=Button(ventana,text="1.-Agregar",command=lambda: self.camiones_agregar(ventana))
+            btnAgregar=Button(ventana,text="1.-Agregar",command=lambda: InterfacesMenu.camiones_agregar(ventana))
             btnAgregar.pack(pady=5)
-            btnMostrar=Button(ventana,text="2.-Mostrar",command=lambda: self.camiones_mostrar(ventana))
+            btnMostrar=Button(ventana,text="2.-Mostrar",command=lambda: InterfacesMenu.camiones_mostrar(ventana))
             btnMostrar.pack(pady=5)
 
-        btnCambiar=Button(ventana,text="3.-Cambiar",command=lambda: self.intrfaz_buscar_cambiar(ventana))
+        btnCambiar=Button(ventana,text="3.-Cambiar",command=lambda: InterfacesMenu.intrfaz_buscar_cambiar(ventana))
         btnCambiar.pack(pady=5)
-        btnEliminar=Button(ventana,text="4.-Eliminar",command=lambda: self.intrfaz_buscar_eliminar(ventana))
+        btnEliminar=Button(ventana,text="4.-Eliminar",command=lambda: InterfacesMenu.intrfaz_buscar_eliminar(ventana))
         btnEliminar.pack(pady=5)
-        btnSalir=Button(ventana,text="5.-Volver",command=lambda: self.menu_principal(ventana))
+        btnSalir=Button(ventana,text="5.-Volver",command=lambda: InterfacesMenu.menu_principal(ventana))
         btnSalir.pack(pady=5)
 
 
 #Parte de coche
-    def coches_agregar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def coches_agregar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text="Agregar coches")
         lblTitulo.pack(pady=5)
         lblMarca=Label(ventana,text="Inserte la marca")
@@ -88,38 +90,40 @@ class InterfacesMenu():
         txtPlazas=Entry(ventana)
         txtPlazas.pack(pady=5)
 
-        btnAgregar=Button(ventana,text="Agregar",command= lambda: "")
+        btnAgregar=Button(ventana,text="Agregar",command= lambda: controlador.Controladores.insertar_coche(txtMarca.get(),txtColor.get(),txtModelo.get(),txtVelocidad.get(),txtPotencia.get(),txtPlazas.get()))
         btnAgregar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def coches_mostrar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def coches_mostrar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text="Coches agregados")
         lblTitulo.pack(pady=5)
         filas=""
-        registros=[("1","Subaru","Azul","2020","160","400","4"),("2","Amg","Rojo","2021","250","400","2")]
-        if len(registros)>0:
-            num_autos=1
-            for fila in registros:
-                filas=filas+f"\nAuto #{num_autos} con ID: {fila[0]} \nMarca: {fila[1]} Color: {fila[2]} Modelo: {fila[3]} Velocidad: {fila[4]} Potencia: {fila[5]} Plazas: {fila[6]}"
-                num_autos+=1
-        else:
-            messagebox.showinfo(message="No existen coches en el sistema")
-
+        registros=controlador.Controladores.mostrar_coche()
+        num_autos=1
+        for fila in registros:
+            filas=filas+f"\nAuto #{num_autos} con ID: {fila[0]} \nMarca: {fila[1]} Color: {fila[2]} Modelo: {fila[3]} Velocidad: {fila[4]} Potencia: {fila[5]} Plazas: {fila[6]}"
+            num_autos+=1
         lblNote=Label(ventana,text=filas)
         lblNote.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command=lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command=lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def coches_cambiar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def coches_cambiar(ventana,opid):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text="Cambiar coche")
         lblTitulo.pack(pady=5)
 
         lblId=Label(ventana,text="Ingrese el id")
         lblId.pack(pady=5)
-        txtId=Entry(ventana)
+        id=IntVar()
+        txtId=Entry(ventana,textvariable=id)
+        txtId.delete(0,END)
+        txtId.insert(0,opid)
+        txtId.config(state="readonly")
         txtId.pack()
 
         lblMarca=Label(ventana,text="Inserte la marca")
@@ -152,28 +156,34 @@ class InterfacesMenu():
         txtPlazas=Entry(ventana)
         txtPlazas.pack(pady=5)
 
-        btnGuardar=Button(ventana,text="Guardar",command= lambda: "")
+        btnGuardar=Button(ventana,text="Guardar",command= lambda: controlador.Controladores.actualizar_coche(txtMarca.get(),txtColor.get(),txtModelo.get(),txtVelocidad.get(),txtPotencia.get(),txtPlazas.get(),id.get()))
         btnGuardar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def coches_eliminar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def coches_eliminar(ventana,opid):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text="Eliminar un coche")
         lblTitulo.pack(pady=5)
         lblId=Label(ventana,text="Ingrese el id")
         lblId.pack(pady=5)
-        txtId=Entry(ventana)
+        id=IntVar()
+        txtId=Entry(ventana,textvariable=id)
+        txtId.delete(0,END)
+        txtId.insert(0,opid)
+        txtId.config(state="readonly")
         txtId.pack()
-        btnEliminar=Button(ventana,text="Eliminar",command= lambda:"")
+        btnEliminar=Button(ventana,text="Eliminar",command= lambda:controlador.Controladores.eliminar_coche(id.get()))
         btnEliminar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
 
 #Parte de camiones
-    def camiones_agregar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def camiones_agregar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Agregar {tipo}")
         lblTitulo.pack(pady=5)
         lblMarca=Label(ventana,text="Inserte la marca")
@@ -218,11 +228,12 @@ class InterfacesMenu():
 
         btnAgregar=Button(ventana,text="Agregar",command= lambda: "")
         btnAgregar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def camiones_mostrar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def camiones_mostrar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Mostrar {tipo}")
         lblTitulo.pack(pady=5)
         filas=""
@@ -238,11 +249,12 @@ class InterfacesMenu():
         lblNote=Label(ventana,text=filas)
         lblNote.pack(pady=5)
 
-        btnVolver=Button(ventana,text="Volver",command=lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command=lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def camiones_cambiar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def camiones_cambiar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Modificar {tipo}")
         lblTitulo.pack(pady=5)
         lblId=Label(ventana,text="Ingrese el id")
@@ -291,11 +303,12 @@ class InterfacesMenu():
 
         btnGuardar=Button(ventana,text="Guardar",command= lambda: "")
         btnGuardar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def camiones_eliminar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def camiones_eliminar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Eliminar un {tipo}")
         lblTitulo.pack(pady=5)
         lblId=Label(ventana,text="Ingrese el id")
@@ -304,13 +317,14 @@ class InterfacesMenu():
         txtId.pack()
         btnEliminar=Button(ventana,text="Eliminar",command= lambda: "")
         btnEliminar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
 
 #Parte de camionetas
-    def camionetas_agregar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def camionetas_agregar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Agregar {tipo}")
         lblTitulo.pack(pady=5)
         lblMarca=Label(ventana,text="Inserte la marca")
@@ -361,13 +375,14 @@ class InterfacesMenu():
 
         btnAgregar=Button(ventana,text="Agregar",command= lambda: "")
         btnAgregar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def camionetas_mostrar(self,ventana):
+    @staticmethod
+    def camionetas_mostrar(ventana):
 
         
-        self.borrarPantalla(ventana)
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Mostrar {tipo}")
         lblTitulo.pack(pady=5)
         filas=""
@@ -383,11 +398,12 @@ class InterfacesMenu():
         lblNote=Label(ventana,text=filas)
         lblNote.pack(pady=5)
 
-        btnVolver=Button(ventana,text="Volver",command=lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command=lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def camionetas_cambiar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def camionetas_cambiar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Modificar {tipo}")
         lblTitulo.pack(pady=5)
         lblId=Label(ventana,text="Ingrese el id")
@@ -442,11 +458,12 @@ class InterfacesMenu():
 
         btnGuardar=Button(ventana,text="Guardar",command= lambda: "")
         btnGuardar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
-    def camionetas_eliminar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def camionetas_eliminar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Eliminar una {tipo}")
         lblTitulo.pack(pady=5)
         lblId=Label(ventana,text="Ingrese el id")
@@ -455,13 +472,13 @@ class InterfacesMenu():
         txtId.pack()
         btnEliminar=Button(ventana,text="Eliminar",command= lambda: "")
         btnEliminar.pack(pady=5)
-        btnVolver=Button(ventana,text="Volver",command= lambda: self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
 
-
-    def intrfaz_buscar_cambiar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def intrfaz_buscar_cambiar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
        
         lblTitulo=Label(ventana,text=f".:Buscar una vehiculo:.")
         lblTitulo.pack(pady=10)
@@ -474,19 +491,20 @@ class InterfacesMenu():
         txtId.pack(pady=10)
         txtId.focus()
         if tipo=="coches":
-            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: self.coches_cambiar(ventana))
+            btnCambiar=Button(ventana,text=f"Buscar",command=lambda:controlador.Controladores.buscarId_modificar(ventana,id.get(),tipo))
             btnCambiar.pack(pady=10)
         elif tipo=="camiones":
-            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: self.camiones_cambiar(ventana))
+            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: InterfacesMenu.camiones_cambiar(ventana))
             btnCambiar.pack(pady=10)
         elif tipo=="camionetas":
-            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: self.camionetas_cambiar(ventana))
+            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: InterfacesMenu.camionetas_cambiar(ventana))
             btnCambiar.pack(pady=10)
-        btnVolver=Button(ventana,text=f"Volver",command=lambda:self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text=f"Volver",command=lambda:InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=10)
 
-    def intrfaz_buscar_eliminar(self,ventana):
-        self.borrarPantalla(ventana)
+    @staticmethod
+    def intrfaz_buscar_eliminar(ventana):
+        InterfacesMenu.borrarPantalla(ventana)
        
         lblTitulo=Label(ventana,text=f".:Buscar una vehiculo:.")
         lblTitulo.pack(pady=10)
@@ -499,15 +517,15 @@ class InterfacesMenu():
         txtId.pack(pady=10)
         txtId.focus()
         if tipo=="coches":
-            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: self.coches_eliminar(ventana))
+            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: controlador.Controladores.buscarId_eliminar(ventana,id.get(),tipo))
             btnEliminar.pack(pady=10)
         elif tipo=="camiones":
-            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: self.camiones_eliminar(ventana))
+            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: InterfacesMenu.camiones_eliminar(ventana))
             btnEliminar.pack(pady=10)
         elif tipo=="camionetas":
-            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: self.camionetas_eliminar(ventana))
+            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: InterfacesMenu.camionetas_eliminar(ventana))
             btnEliminar.pack(pady=10)
 
 
-        btnVolver=Button(ventana,text=f"Volver",command=lambda:self.menu_acciones(ventana,tipo))
+        btnVolver=Button(ventana,text=f"Volver",command=lambda:InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=10)
