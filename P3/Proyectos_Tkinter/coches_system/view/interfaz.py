@@ -226,7 +226,7 @@ class InterfacesMenu():
         txtCapacidad=Entry(ventana)
         txtCapacidad.pack()
 
-        btnAgregar=Button(ventana,text="Agregar",command= lambda: "")
+        btnAgregar=Button(ventana,text="Agregar",command= lambda: controlador.Controladores.camion_insertar(txtMarca.get(),txtColor.get(),txtModelo.get(),txtVelocidad.get(),txtPotencia.get(),txtPlazas.get(),txtEje.get(),txtCapacidad.get()))
         btnAgregar.pack(pady=5)
         btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
@@ -237,7 +237,7 @@ class InterfacesMenu():
         lblTitulo=Label(ventana,text=f"Mostrar {tipo}")
         lblTitulo.pack(pady=5)
         filas=""
-        registros=registros=[("1","Subaru","Azul","2020","160","400","4","6","2"),("2","Amg","Rojo","2021","250","400","2","10",4)]
+        registros=controlador.Controladores.camion_mostrar()
         if len(registros)>0:
             num_camion=1
             for fila in registros:
@@ -253,14 +253,19 @@ class InterfacesMenu():
         btnVolver.pack(pady=5)
 
     @staticmethod
-    def camiones_cambiar(ventana):
+    def camiones_cambiar(ventana,opid):
         InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Modificar {tipo}")
         lblTitulo.pack(pady=5)
+
         lblId=Label(ventana,text="Ingrese el id")
         lblId.pack(pady=5)
         txtId=Entry(ventana)
+        txtId.delete(0,END)
+        txtId.insert(0,opid)
+        txtId.config(state="readonly")
         txtId.pack()
+
         lblMarca=Label(ventana,text="Inserte la marca")
         lblMarca.pack()
         txtMarca=Entry(ventana)
@@ -301,21 +306,26 @@ class InterfacesMenu():
         txtCapacidad=Entry(ventana)
         txtCapacidad.pack()
 
-        btnGuardar=Button(ventana,text="Guardar",command= lambda: "")
+        btnGuardar=Button(ventana,text="Guardar",command= lambda: controlador.Controladores.camion_cambiar(txtMarca.get(),txtColor.get(),txtModelo.get(),txtVelocidad.get(),txtPotencia.get(),txtPlazas.get(),txtEje.get(),txtCapacidad.get(),txtId.get()))
         btnGuardar.pack(pady=5)
         btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
     @staticmethod
-    def camiones_eliminar(ventana):
+    def camiones_eliminar(ventana,opid):
         InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Eliminar un {tipo}")
         lblTitulo.pack(pady=5)
+
         lblId=Label(ventana,text="Ingrese el id")
         lblId.pack(pady=5)
         txtId=Entry(ventana)
+        txtId.delete(0,END)
+        txtId.insert(0,opid)
+        txtId.config(state="readonly")
         txtId.pack()
-        btnEliminar=Button(ventana,text="Eliminar",command= lambda: "")
+
+        btnEliminar=Button(ventana,text="Eliminar",command= lambda: controlador.Controladores.camion_eliminar(txtId.get()))
         btnEliminar.pack(pady=5)
         btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
@@ -373,24 +383,22 @@ class InterfacesMenu():
             lbxCerrada.insert(END,i)
         lbxCerrada.pack()
 
-        btnAgregar=Button(ventana,text="Agregar",command= lambda: "")
+        btnAgregar=Button(ventana,text="Agregar",command= lambda: controlador.Controladores.camionetas_insertar(txtMarca.get(),txtColor.get(),txtModelo.get(),txtVelocidad.get(),txtPotencia.get(),txtPlazas.get(),lbxTraccion.get(ACTIVE),lbxCerrada.get(ACTIVE)))
         btnAgregar.pack(pady=5)
         btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
     @staticmethod
     def camionetas_mostrar(ventana):
-
-        
         InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Mostrar {tipo}")
         lblTitulo.pack(pady=5)
         filas=""
-        registros=""
+        registros=controlador.Controladores.camionetas_mostrar()
         if len(registros)>0:
             num_camion=1
             for fila in registros:
-                filas=filas+f"\nAuto #{num_camion} con ID: {fila[0]} \nMarca: {fila[1]} Color: {fila[2]} Modelo: {fila[3]} Velocidad: {fila[4]} Potencia: {fila[5]} Plazas: {fila[6]} Traccion: {fila[7]} Cerrada: {fila[8]}"
+                filas=filas+f"\nCamioneta #{num_camion} con ID: {fila[0]} \nMarca: {fila[1]} Color: {fila[2]} Modelo: {fila[3]} Velocidad: {fila[4]} Potencia: {fila[5]} Plazas: {fila[6]} Traccion: {fila[7]} Cerrada: {fila[8]}"
                 num_camion+=1
         else:
             messagebox.showinfo(message=f"No existen {tipo} en el sistema")
@@ -402,13 +410,16 @@ class InterfacesMenu():
         btnVolver.pack(pady=5)
 
     @staticmethod
-    def camionetas_cambiar(ventana):
+    def camionetas_cambiar(ventana,opid):
         InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Modificar {tipo}")
         lblTitulo.pack(pady=5)
         lblId=Label(ventana,text="Ingrese el id")
         lblId.pack(pady=5)
         txtId=Entry(ventana)
+        txtId.delete(0,END)
+        txtId.insert(0,opid)
+        txtId.config(state="readonly")
         txtId.pack()
         lblMarca=Label(ventana,text="Inserte la marca")
         lblMarca.pack()
@@ -456,21 +467,24 @@ class InterfacesMenu():
             lbxCerrada.insert(END,i)
         lbxCerrada.pack()
 
-        btnGuardar=Button(ventana,text="Guardar",command= lambda: "")
+        btnGuardar=Button(ventana,text="Guardar",command= lambda: controlador.Controladores.camioneta_cambiar(txtMarca.get(),txtColor.get(),txtModelo.get(),txtVelocidad.get(),txtPotencia.get(),txtPlazas.get(),lbxTraccion.get(ACTIVE),lbxCerrada.get(ACTIVE),txtId.get()))
         btnGuardar.pack(pady=5)
         btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
 
     @staticmethod
-    def camionetas_eliminar(ventana):
+    def camionetas_eliminar(ventana,opid):
         InterfacesMenu.borrarPantalla(ventana)
         lblTitulo=Label(ventana,text=f"Eliminar una {tipo}")
         lblTitulo.pack(pady=5)
         lblId=Label(ventana,text="Ingrese el id")
         lblId.pack(pady=5)
         txtId=Entry(ventana)
+        txtId.delete(0,END)
+        txtId.insert(0,opid)
+        txtId.config(state="readonly")
         txtId.pack()
-        btnEliminar=Button(ventana,text="Eliminar",command= lambda: "")
+        btnEliminar=Button(ventana,text="Eliminar",command= lambda: controlador.Controladores.camionetas_eliminar(txtId.get()))
         btnEliminar.pack(pady=5)
         btnVolver=Button(ventana,text="Volver",command= lambda: InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=5)
@@ -494,10 +508,10 @@ class InterfacesMenu():
             btnCambiar=Button(ventana,text=f"Buscar",command=lambda:controlador.Controladores.buscarId_modificar(ventana,id.get(),tipo))
             btnCambiar.pack(pady=10)
         elif tipo=="camiones":
-            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: InterfacesMenu.camiones_cambiar(ventana))
+            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: controlador.Controladores.buscarId_modificar(ventana,id.get(),tipo))
             btnCambiar.pack(pady=10)
         elif tipo=="camionetas":
-            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: InterfacesMenu.camionetas_cambiar(ventana))
+            btnCambiar=Button(ventana,text=f"Buscar",command=lambda: controlador.Controladores.buscarId_modificar(ventana,id.get(),tipo))
             btnCambiar.pack(pady=10)
         btnVolver=Button(ventana,text=f"Volver",command=lambda:InterfacesMenu.menu_acciones(ventana,tipo))
         btnVolver.pack(pady=10)
@@ -520,10 +534,10 @@ class InterfacesMenu():
             btnEliminar=Button(ventana,text=f"Buscar",command=lambda: controlador.Controladores.buscarId_eliminar(ventana,id.get(),tipo))
             btnEliminar.pack(pady=10)
         elif tipo=="camiones":
-            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: InterfacesMenu.camiones_eliminar(ventana))
+            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: controlador.Controladores.buscarId_eliminar(ventana,id.get(),tipo))
             btnEliminar.pack(pady=10)
         elif tipo=="camionetas":
-            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: InterfacesMenu.camionetas_eliminar(ventana))
+            btnEliminar=Button(ventana,text=f"Buscar",command=lambda: controlador.Controladores.buscarId_eliminar(ventana,id.get(),tipo))
             btnEliminar.pack(pady=10)
 
 
